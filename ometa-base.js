@@ -404,6 +404,9 @@ OMeta = {
   spaces: function() {
     return this._many(function() { return this._apply("space") })
   },
+  _: function() {
+	return this._many(function() { return this._apply("space") })
+  },
   digit: function() {
     var r = this._apply("char")
     this._pred(r.isDigit())
