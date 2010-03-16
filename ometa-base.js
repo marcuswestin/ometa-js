@@ -131,6 +131,7 @@ OMeta = {
       var origInput = this.input,
           failer    = new Failer()
       this.input.memo[rule] = failer
+		if (!this[rule]) { debugger; if (typeof require != 'undefined') { require('sys').puts("No rule: " + rule)} }
       this.input.memo[rule] = memoRec = {ans: this[rule].call(this), nextInput: this.input}
       if (failer.used) {
         var sentinel = this.input
@@ -163,7 +164,8 @@ OMeta = {
   _applyWithArgs: function(rule) {
     for (var idx = arguments.length - 1; idx > 0; idx--)
       this._prependInput(arguments[idx])
-    return this[rule].call(this)
+    if (!this[rule]) { if (typeof require !='undefined') { require('sys').puts("No rule: "+ rule); }}
+	return this[rule].call(this)
   },
   _superApplyWithArgs: function(recv, rule) {
     for (var idx = arguments.length - 1; idx > 1; idx--)
@@ -427,6 +429,10 @@ OMeta = {
                     function() { return this._apply("upper") })
   },
   letterOrDigit: function() {
+    return this._or(function() { return this._apply("letter") },
+                    function() { return this._apply("digit")  })
+  },
+  az09: function() {
     return this._or(function() { return this._apply("letter") },
                     function() { return this._apply("digit")  })
   },
